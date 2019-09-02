@@ -20,11 +20,12 @@ package com.thht.settings.device;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.om.IOverlayManager;
+import android.content.om.OverlayInfo;
+import android.os.RemoteException;
 import android.os.Bundle;
 import android.os.ServiceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import com.android.internal.statusbar.ThemeAccentUtils;
 
 public class DeviceSettings extends AppCompatActivity {
 
@@ -34,6 +35,18 @@ public class DeviceSettings extends AppCompatActivity {
     //            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
     //}
 
+
+    public static boolean isUsingDarkTheme(IOverlayManager om, int userId) {
+        OverlayInfo themeInfo = null;
+        try {
+            themeInfo = om.getOverlayInfo("com.android.system.theme.dark",
+                    userId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return themeInfo != null && themeInfo.isEnabled();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -41,7 +54,7 @@ public class DeviceSettings extends AppCompatActivity {
         IOverlayManager overlayManager;
         overlayManager = IOverlayManager.Stub.asInterface(
                 ServiceManager.getService(Context.OVERLAY_SERVICE));
-        boolean useDarkTheme = ThemeAccentUtils.isUsingDarkTheme(
+        boolean useDarkTheme = isUsingDarkTheme(
                 overlayManager, ActivityManager.getCurrentUser());
         //boolean useBlackTheme = ThemeAccentUtils.isUsingBlackTheme(
         //        overlayManager, ActivityManager.getCurrentUser());
