@@ -224,3 +224,6 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 # Inherit from the proprietary version
 -include vendor/xiaomi/mido/BoardConfigVendor.mk
 -include vendor/xiaomi/msm8953-common/BoardConfigVendor.mk
+
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_PHONY_TARGETS := true
